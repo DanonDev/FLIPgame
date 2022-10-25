@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+
 *{
     margin: 0;
     padding: 0;
@@ -5,23 +7,52 @@
     
 
     .gamename {
-        font-size: 20px;
+        font-size: 38px;
         font-weight: bold;
-        color: lightcoral;
+        color: orange;
+        text-align: center;
+        margin: 20px;
+        margin-top: 10px;
+        font-family: 'Nosifer';
+        letter-spacing: 3px;
     }
+
+    body{
+        background-image: url(/assets/images/Scary-Halloween-Background-1-1.jpg);
+        background-size: cover;
+    }
+
+
+    .main{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     
+        #gameboard {
+            display: grid;
+            grid-template-columns: repeat(4, 9rem);
+            grid-template-rows: repeat(4, 9rem);
+            grid-gap: 1rem;
 
-    #gameboard {
-        width: 70%;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+            .face {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border: 5px solid orange;
+                background: black;
+            }
 
-
-        img{
-            width: 100%;
-            border: 3px solid black;
-            margin: 5px;
-            margin-left: 5px;
+            .back {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border: 5px solid orange;
+                background-image: url(/assets/images/halloween-pumpkin-vector-21535932.jpg);
+                background-size: cover;
+            }
+            
         }
+
     }
-}
+}    
