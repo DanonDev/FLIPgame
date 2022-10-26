@@ -17,27 +17,53 @@ const cardGenerator = () => {
         back.classList = "back";
         //Link images
         face.src = item.image
+        card.setAttribute('name', item.title)
         //Attaching Cards to the section
         gameboard.appendChild(card);
         card.appendChild(face);
         card.appendChild(back);
+        //cardk click funk
+        card.addEventListener('click', (e) => {
+            card.classList.toggle('toggleCard');
+            checkedCards(e)
+        })
     });
+};
+
+//Cheking cards
+const checkedCards = (e) => {
+    const clickedCard = e.target;
+    clickedCard.classList.add("flipped");
+    const flippedCards = document.querySelectorAll('.flipped');
+
+    console.log(flippedCards);
+
+//Logic process
+    if(flippedCards.length === 2) {
+        if(
+            flippedCards[0].getAttribute("name") === 
+            flippedCards[1].getAttribute("name")
+        )   {
+            console.log("match");
+            flippedCards.forEach((card) => {
+                card.classList.remove("flipped");
+                card.style.pointerEvents = "none";
+            });
+        } else {
+            console.log("wrong");
+            flippedCards.forEach((card) => {
+                card.classList.remove("flipped");
+                setTimeout(() => card.classList.remove("toggleCard"), 1200)
+            });
+        } 
+    }
+
 };
 
  cardGenerator();
 
 
 
-
-
-
-
-
-// for(let card of cardList) {
-//     let div = document.createElement('div')
-//     div.innerText = card.monster
-//     gameboard.append(div)
-// }
 
 
  
