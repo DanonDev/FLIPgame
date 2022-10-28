@@ -3,63 +3,196 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Nosifer";
 }
-* .gamename {
+* body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url(/assets/images/Scary-Halloween-Background-1-1.jpg);
+}
+* body .gamename {
   font-size: 38px;
   font-weight: bold;
   color: orange;
   text-align: center;
   margin: 20px;
   margin-top: 10px;
-  font-family: "Nosifer";
   letter-spacing: 3px;
 }
-* body {
-  background-image: url(/assets/images/Scary-Halloween-Background-1-1.jpg);
-  background-size: cover;
+* body .details {
+  display: flex;
+  width: 50%;
+  align-items: center;
+  justify-content: space-between;
 }
-* .main {
+* body .details .time {
+  font-size: 20px;
+  font-weight: bold;
+  color: orange;
+  letter-spacing: 2px;
+}
+* body .details .time b {
+  font-size: 27px;
+  color: red;
+}
+* body .details .flips {
+  font-size: 20px;
+  font-weight: bold;
+  color: orange;
+  letter-spacing: 2px;
+}
+* body .details .flips b {
+  font-size: 27px;
+}
+* body .details button {
+  border: none;
+  background: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: orange;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+* body .details button:hover {
+  color: red;
+}
+* body .gameboard {
   display: flex;
   justify-content: center;
+  width: 800px;
+  height: 800px;
+  padding: 25px;
+}
+
+.cards, .card, .face {
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
-* .main #gameboard {
-  display: grid;
-  grid-template-columns: repeat(4, 9rem);
-  grid-template-rows: repeat(4, 9rem);
-  grid-gap: 1rem;
-  perspective: 1000px;
+
+.cards {
+  height: 100%;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-* .main #gameboard .card {
+.cards .card {
+  cursor: pointer;
   position: relative;
+  perspective: 800px;
   transform-style: preserve-3d;
-  transition: all 1s ease;
-  box-shadow: 0px 5px 15px;
+  height: calc(25% - 10px);
+  width: calc(25% - 10px);
 }
-* .main #gameboard .face {
+.cards .card .face {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border: 5px solid orange;
-  background: black;
-  position: absolute;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   pointer-events: none;
-}
-* .main #gameboard .back {
-  display: block;
   position: absolute;
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border: 5px solid orange;
-  background-image: url(/assets/images/halloween-pumpkin-vector-21535932.jpg);
-  background-size: cover;
+  transition: 0.25s linear;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
-  pointer-events: none;
+  border: 5px solid orange;
+  box-shadow: 0px 5px 15px;
 }
-* .main #gameboard .toggleCard {
+.cards .card .face .imagecard {
+  height: calc(100% - 0.1px);
+  width: calc(100% - 0.1px);
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.cards .card .face img {
+  width: 170px;
+  height: 170px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.cards .card .back-side {
+  transform: rotateY(-180deg);
+}
+
+.card.bombom {
+  -webkit-animation: shake 0.35s ease-in-out;
+          animation: shake 0.35s ease-in-out;
+}
+
+@-webkit-keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.card.flip .front-side {
   transform: rotateY(180deg);
+}
+
+.card.flip .back-side {
+  transform: rotateY(0);
+}
+
+@media (max-width: 1536px) {
+  body {
+    overflow: hidden;
+  }
+  .cards {
+    height: 550px;
+    width: 550px;
+  }
+  .cards .card .face img {
+    width: 115px;
+    height: 115px;
+  }
+  .time {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .time b {
+    font-size: 15px;
+  }
+  .flips {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .flips b {
+    font-size: 15px;
+  }
+  button {
+    font-size: 12px;
+  }
 }/*# sourceMappingURL=styling.css.map */

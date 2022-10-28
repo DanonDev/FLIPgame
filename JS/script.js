@@ -1,69 +1,102 @@
-import {Monsters} from "./cards.js"
+const cards = document.querySelectorAll('.card')
+timeTag = document.querySelector(".time b"),
+flipsTag = document.querySelector(".flips b"),
+refreshBtn = document.querySelector(".details button");
 
-const gameboard = document.getElementById('gameboard')
-const numCards = 8;
-let cardList = Monsters()
-cardList.sort(() => Math.random() - 0.5);
-cardList = cardList.slice(0, numCards)
-cardList = cardList.concat(cardList)
+let maxTime = 50;
+let timeLeft = maxTime;
+let flips = 0;
+let matchedCard = 0;
+let firstCard, secondCard, timer;
+let isPlaying = false;
+let thirdflip = false;
 
-const cardGenerator = () => {
-    cardList.forEach((item) => {
-        const card = document.createElement('div');
-        const face = document.createElement('img');
-        const back = document.createElement('div');
-        card.classList = "card";
-        face.classList = "face";
-        back.classList = "back";
-        //Link images
-        face.src = item.image
-        card.setAttribute('name', item.title)
-        //Attaching Cards to the section
-        gameboard.appendChild(card);
-        card.appendChild(face);
-        card.appendChild(back);
-        //cardk click funk
-        card.addEventListener('click', (e) => {
-            card.classList.toggle('toggleCard');
-            checkedCards(e)
-        })
-    });
-};
+refreshBtn.addEventListener("click", shuffleCard);
 
-//Cheking cards
-const checkedCards = (e) => {
-    const clickedCard = e.target;
-    clickedCard.classList.add("flipped");
-    const flippedCards = document.querySelectorAll('.flipped');
+cards.forEach(card => { // adding clik ivents for all cards
+    card.addEventListener("click", flipCard);
+});
 
-    console.log(flippedCards);
 
-//Logic process
-    if(flippedCards.length === 2) {
-        if(
-            flippedCards[0].getAttribute("name") === 
-            flippedCards[1].getAttribute("name")
-        )   {
-            console.log("match");
-            flippedCards.forEach((card) => {
-                card.classList.remove("flipped");
-                card.style.pointerEvents = "none";
-            });
-        } else {
-            console.log("wrong");
-            flippedCards.forEach((card) => {
-                card.classList.remove("flipped");
-                setTimeout(() => card.classList.remove("toggleCard"), 1200)
-            });
-        } 
+function initTimer() {
+    if(timeLeft <= 0) {
+        return clearInterval(timer);
     }
-
-};
-
- cardGenerator();
-
+    timeLeft--;
+    timeTag.innerText = timeLeft;
+}
 
 
+function flipCard({target: clickedCard}) {
+    if(!isPlaying) {
+        isPlaying = true;
+        timer = setInterval(initTimer, 1000);
+    }
+    if(clickedCard !== firstCard && !thirdflip && timeLeft > 0) {
+        flips++;
+        flipsTag.innerText = flips;
+        clickedCard.classList.add("flip");
+        if(!firstCard) {
+            //return firstCard value to clickedCard
+            return firstCard = clickedCard;
+        }
+        secondCard = clickedCard;
+        thirdflip = true;
+        let firstCardImg = firstCard.querySelector(".back-side img").src,
+        secondCardImg = secondCard.querySelector(".back-side img").src;
+        matchCards(firstCardImg, secondCardImg);
+    }
+}
 
+function matchCards(img1, img2) {
+    if(img1 === img2) { // if  two catds img are matched
+        matchedCard++; // increment matched value by 1
+        // if matched value is 8 that means user have matched all the cards
+        if(matchedCard == 8 && timeLeft > 0) {
+            return clearInterval(timer);
+            // setTimeout(() => {
+            //     return shuffleCard();
+            // }, 1000); 
+        }
+        firstCard.removeEventListener("click", flipCard);
+        secondCard.removeEventListener("click", flipCard);
+        firstCard = secondCard = "";
+        return thirdflip = false;
+    }
+    // if two card not matched
+    setTimeout(() => { // adding bombom class to both card after 400ms
+        firstCard.classList.add("bombom");
+        secondCard.classList.add("bombom")
+    }, 400);
 
- 
+    setTimeout(() => { // removing both bombom and flip classes from both cards after 1200ms
+        firstCard.classList.remove("bombom", "flip");
+        secondCard.classList.remove("bombom", "flip");
+        firstCard = secondCard = ""; // setting borh card  value blank
+        thirdflip = false;
+    }, 1200);
+}
+
+function shuffleCard() {
+    timeLeft = maxTime;
+    flips = matchedCard = 0;
+    firstCard = secondCard = "";
+    clearInterval(timer);
+    timeTag.innerText = timeLeft;
+    flipsTag.innerText = flips;
+    disableDeck = false;
+
+    let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
+    arr.sort(() => Math.random() > 0.5 ? 1 : -1);
+
+    cards.forEach((card, index) => {
+        card.classList.remove("flip");
+        let imgTag = card.querySelector(".back-side img");
+        setTimeout (() => {
+            imgTag.src = `assets/cards/halloween${arr[index]}.jpg`;
+        }, 500);
+        card.addEventListener("click", flipCard);
+    });
+}
+
+shuffleCard();
